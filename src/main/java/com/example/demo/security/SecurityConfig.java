@@ -1,5 +1,7 @@
 package com.example.demo.security;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,6 +36,21 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/problem+json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("""
+                                    {"type":"urn:problem-type:unauthorized","title":"Unauthorized","status":401,"detail":"Authentication is required"}""");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/problem+json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("""
+                                    {"type":"urn:problem-type:forbidden","title":"Forbidden","status":403,"detail":"You do not have permission to perform this action"}""");
+                        }))
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
