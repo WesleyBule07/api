@@ -1,3 +1,32 @@
 spring:
   application:
     name: demo1
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:demo1}
+    username: ${DB_USER:demo1}
+    password: ${DB_PASSWORD:demo1}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:CHANGE_ME_km0K7PGcNvy9WJuc2ozo4k9Q7fwmK7mZ3e6h5x4y3w2v1u0t9s8r7q6p5o4n3}
+    access-token-ttl: 15m
+    refresh-token-ttl: 7d
+    issuer: demo1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+server:
+  error:
+    include-message: always
