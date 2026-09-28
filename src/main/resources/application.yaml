@@ -18,7 +18,7 @@ spring:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:CHANGE_ME_km0K7PGcNvy9WJuc2ozo4k9Q7fwmK7mZ3e6h5x4y3w2v1u0t9s8r7q6p5o4n3}
+    secret: ${JWT_SECRET:yAosXNy/vJaEZhwS8ORSed58zQvAwGDP+1tv+Xm9JT4rce+b1IiMc7wShWxgZLIq}
     access-token-ttl: 15m
     refresh-token-ttl: 7d
     issuer: demo1
