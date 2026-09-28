@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: demo1
       POSTGRES_PASSWORD: demo1
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
