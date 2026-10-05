@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -68,8 +69,12 @@ public class JwtService {
     }
 
     public boolean isTokenExpired(String token) {
-        Date expiration = extractClaim(token, Claims::getExpiration);
-        return expiration.before(new Date());
+        try {
+            Date expiration = extractClaim(token, Claims::getExpiration);
+            return expiration.before(new Date());
+        } catch (ExpiredJwtException ex) {
+            return true;
+        }
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> resolver) {
